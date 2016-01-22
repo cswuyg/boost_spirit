@@ -6,9 +6,7 @@
 #include "unicode_user.h"
 
 namespace rick {
-
     boost::shared_ptr<Parser> Parser::_s_self; 
-
     boost::shared_ptr<Parser> Parser::instance() {
         if (_s_self) {
             return _s_self;
@@ -24,13 +22,19 @@ namespace rick {
 
         Interpreter interpreter;
         std::wstring ret;
-        bool result = qi::parse(unicode_input.begin(), unicode_input.end(), interpreter, ret);   // returns true if successful
+        std::wstring::iterator begin = unicode_input.begin();
+        std::wstring::iterator end = unicode_input.end();
+        bool result = qi::parse(begin, end, interpreter, ret);   // returns true if successful
 
-        if (result) {
+        if (result && begin == end) {
             std::string utf_ret = boost::locale::conv::utf_to_utf<char>(ret.c_str());
             std::cout << "result:" << utf_ret << std::endl;
             return utf_ret;
-        } 
+        } else {
+           std::wstring rest(begin, end);
+           std::string utf8_rest = boost::locale::conv::utf_to_utf<char>(rest.c_str());
+           std::cout << "rest:" << gbk_ret << std::endl;
+        }
         std::cout << "parse fail:" << std::endl;
         return "";
     }

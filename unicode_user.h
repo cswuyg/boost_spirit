@@ -45,7 +45,7 @@ namespace rick {
 
         private:
            Parser(){}
-            static boost::shared_ptr<Parser> _s_self; 
+           static boost::shared_ptr<Parser> _s_self; 
     };
 }
 
